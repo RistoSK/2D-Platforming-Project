@@ -77,7 +77,7 @@ public class PlayerController : KinematicObject
     }
     public void EnemyStomped()
     {
-        Bounce();
+       
     }
 
     public void PlayerDied()
@@ -95,7 +95,24 @@ public class PlayerController : KinematicObject
         _bIsControllerAttached = true;
     }
 
-    private void UpdateJumpingPlayerState()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var enemy = collision.gameObject.GetComponent<EnemyController>();
+
+        if (enemy != null)
+        {
+            if (playerState != PlayerState.Grounded)
+            {
+                Bounce(enemy._playerBounceForce);
+            }
+            else
+            {
+                PlayerDied();
+            }
+        }
+    }
+
+        private void UpdateJumpingPlayerState()
     {
         switch (playerState)
         {

@@ -6,7 +6,6 @@ public class KinematicObject : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
-    [SerializeField] private float _bounceForce = 12f;
 
     [SerializeField] private Transform _groundCheckTransform;
     [SerializeField] private float _groundCheckRadius;
@@ -38,9 +37,9 @@ public class KinematicObject : MonoBehaviour
         }
     }
 
-    protected void Bounce()
+    protected void Bounce(float bounceForce)
     {
-        _rb.AddForce(new Vector2(0, _bounceForce), ForceMode2D.Impulse);
+        _rb.AddForce(new Vector2(0, bounceForce), ForceMode2D.Impulse);
     }
 
     protected bool CheckIfPlayerIsIdle()

@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private  Transform _patrolPoint1;
     [SerializeField] private  Transform _patrolPoint2;
     [SerializeField] private float _speed = 2f;
-    [SerializeField] private PlayerController _pc;
+    [SerializeField] public float _playerBounceForce = 12f;
 
     private Animator _animator;
     private Vector3 _destPoint;
@@ -66,18 +66,14 @@ public class EnemyController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         var player = collision.gameObject.GetComponent<PlayerController>();
+
         if (player != null)
         {
             if (player.playerState != PlayerController.PlayerState.Grounded)
             {
                 _animator.SetBool("Dead", true);
                 _bIsDead = true;
-                _pc.EnemyStomped();
                 _collider.enabled = false;
-            }
-            else
-            {
-                _pc.PlayerDied();
             }
         }
     }
