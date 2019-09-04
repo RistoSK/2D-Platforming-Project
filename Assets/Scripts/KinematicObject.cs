@@ -19,6 +19,8 @@ public class KinematicObject : MonoBehaviour
     private float _jumpTimeLimit = 0.5f;
     private float _jumpTimeCounter;
     private SpriteRenderer _spriteRenderer;
+    private float _coyoteTime = 0.3f;
+    private float _notGroundedTimer;
 
     protected virtual void Update()
     {
@@ -35,6 +37,18 @@ public class KinematicObject : MonoBehaviour
         {
             _spriteRenderer.flipX = true;
         }
+
+        if (!_bIsGrounded)
+        {
+            if (_notGroundedTimer < _coyoteTime)
+            {
+                _notGroundedTimer += Time.deltaTime;
+            }
+        }
+        else
+        {
+            _notGroundedTimer = 0f;
+        }
     }
 
     protected void Bounce(float bounceForce)
@@ -49,11 +63,15 @@ public class KinematicObject : MonoBehaviour
 
     protected void Jump()
     {
-        if (_bIsGrounded == true && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            _bIsJumping = true;
-            _jumpTimeCounter = _jumpTimeLimit;
-            _rb.velocity = Vector2.up * _jumpForce;
+            if (_bIsGrounded || _notGroundedTimer < _coyoteTime)
+            {
+                _bIsJumping = true;
+                _jumpTimeCounter = _jumpTimeLimit;
+                _rb.velocity = Vector2.up * _jumpForce;
+                _notGroundedTimer = _coyoteTime;
+            }
         }
     }
 

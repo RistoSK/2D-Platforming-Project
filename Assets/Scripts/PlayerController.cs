@@ -35,10 +35,8 @@ public class PlayerController : KinematicObject
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            playerState = PlayerState.PrepareToJump;
-            _bIsJumping = true;
-
             Jump();
+            playerState = PlayerState.PrepareToJump;
         }
 
         if (_bIsJumping)
@@ -74,10 +72,6 @@ public class PlayerController : KinematicObject
         {
             Move();
         }
-    }
-    public void EnemyStomped()
-    {
-       
     }
 
     public void PlayerDied()
