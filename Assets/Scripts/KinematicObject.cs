@@ -12,9 +12,12 @@ public class KinematicObject : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] protected bool _bIsGrounded;
 
-    protected Rigidbody2D _rb;
-    protected Vector2 _movement;
-    protected bool _bIsJumping;
+    [SerializeField] private AudioClip _jumpingAudio;
+
+    protected Rigidbody2D rb;
+    protected Vector2 movement;
+    protected bool bIsJumping;
+    protected AudioSource audioSource;
 
     private float _jumpTimeLimit = 0.5f;
     private float _jumpTimeCounter;
@@ -25,15 +28,16 @@ public class KinematicObject : MonoBehaviour
     protected virtual void Update()
     {
         _bIsGrounded = Physics2D.OverlapCircle(_groundCheckTransform.position, _groundCheckRadius, _groundLayer);
-        _movement = Vector2.zero;
+        movement = Vector2.zero;
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        _movement.x = Input.GetAxisRaw("Horizontal");
+        
+        movement.x = Input.GetAxisRaw("Horizontal");
 
-        if (_movement.x > 0.01f)
+        if (movement.x > 0.01f)
         {
             _spriteRenderer.flipX = false;
         }
-        else if (_movement.x < -0.01f)
+        else if (movement.x < -0.01f)
         {
             _spriteRenderer.flipX = true;
         }
@@ -53,12 +57,12 @@ public class KinematicObject : MonoBehaviour
 
     protected void Bounce(float bounceForce)
     {
-        _rb.AddForce(new Vector2(0, bounceForce), ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(0, bounceForce), ForceMode2D.Impulse);
     }
 
     protected bool CheckIfPlayerIsIdle()
     {
-        return _movement.x == 0 && _movement.y == 0;
+        return movement.x == 0 && movement.y == 0;
     }
 
     protected void Jump()
@@ -67,9 +71,10 @@ public class KinematicObject : MonoBehaviour
         {
             if (_bIsGrounded || _notGroundedTimer < _coyoteTime)
             {
-                _bIsJumping = true;
+                audioSource.PlayOneShot(_jumpingAudio);
+                bIsJumping = true;
                 _jumpTimeCounter = _jumpTimeLimit;
-                _rb.velocity = Vector2.up * _jumpForce;
+                rb.velocity = Vector2.up * _jumpForce;
                 _notGroundedTimer = _coyoteTime;
             }
         }
@@ -81,23 +86,23 @@ public class KinematicObject : MonoBehaviour
         {
             if (_jumpTimeCounter > 0)
             {
-                _rb.velocity = Vector2.up * _jumpForce;
+                rb.velocity = Vector2.up * _jumpForce;
                 _jumpTimeCounter -= Time.deltaTime;
             }
             else
             {
-                _bIsJumping = false;
+                bIsJumping = false;
             }
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _bIsJumping = false;
+            bIsJumping = false;
         }
     }
 
     protected void Move()
     {
-        _rb.position = _rb.position + _movement.normalized * Time.deltaTime * _speed;
+        rb.position = rb.position + movement.normalized * Time.deltaTime * _speed;
     }
 }

@@ -14,11 +14,13 @@ public class EnemyController : MonoBehaviour
     private Rigidbody2D _rb;
     private Collider2D _collider;
     private SpriteRenderer _spriteRenderer;
+    private AudioSource _audioSource;
 
     private bool _bIsDead;
 
     private void Start()
     {
+        _audioSource = GetComponentInParent<AudioSource>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody2D>();
@@ -71,6 +73,7 @@ public class EnemyController : MonoBehaviour
         {
             if (player.playerState != PlayerController.PlayerState.Grounded)
             {
+                _audioSource.Play();
                 _animator.SetBool("Dead", true);
                 _bIsDead = true;
                 _collider.enabled = false;

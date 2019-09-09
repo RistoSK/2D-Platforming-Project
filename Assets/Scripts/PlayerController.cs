@@ -15,7 +15,9 @@ public class PlayerController : KinematicObject
 
     [SerializeField] private Transform _respawnPositionTransform;
     [SerializeField] private bool _bIsControllerAttached = true;
-    [SerializeField] private float _respawnTime = 0.7f;
+    [SerializeField] private float _respawnTime = 1.2f;
+    [SerializeField] private AudioClip _deathAudio;
+    [SerializeField] private AudioClip _respawnAudio;
 
     public PlayerState playerState;
 
@@ -27,7 +29,8 @@ public class PlayerController : KinematicObject
         playerState = PlayerState.Grounded;
 
         _collider = GetComponent<Collider2D>();
-        _rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
     }
 
@@ -39,7 +42,7 @@ public class PlayerController : KinematicObject
             playerState = PlayerState.PrepareToJump;
         }
 
-        if (_bIsJumping)
+        if (bIsJumping)
         {
             JumpMomentum();
         }
@@ -65,7 +68,7 @@ public class PlayerController : KinematicObject
         }
         else
         {
-            _animator.SetFloat("VelocityX", Mathf.Abs(_movement.x));
+            _animator.SetFloat("VelocityX", Mathf.Abs(movement.x));
         }
 
         if (!CheckIfPlayerIsIdle())
@@ -76,9 +79,10 @@ public class PlayerController : KinematicObject
 
     public void PlayerDied()
     {
+        audioSource.PlayOneShot(_deathAudio);
         _bIsControllerAttached = false;
         _collider.enabled = false;
-        _rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
         _animator.SetTrigger("Dead");
 
         StartCoroutine(Respawn());
@@ -112,7 +116,7 @@ public class PlayerController : KinematicObject
         {
             case PlayerState.PrepareToJump:
                 playerState = PlayerState.Jumping;
-                _animator.SetBool("Jumping", _bIsJumping);
+                _animator.SetBool("Jumping", bIsJumping);
                 break;
             case PlayerState.Jumping:
                 if (!_bIsGrounded)
@@ -134,20 +138,21 @@ public class PlayerController : KinematicObject
 
     private void PlayerLanded()
     {
-        _bIsJumping = false;
+        bIsJumping = false;
 
-        _animator.SetBool("Jumping", _bIsJumping);
+        _animator.SetBool("Jumping", bIsJumping);
         _animator.SetBool("Landed", false);
 
         playerState = PlayerState.Grounded;
     }
 
     private IEnumerator Respawn()
-    {
+    {       
         yield return new WaitForSeconds(_respawnTime);
         _collider.enabled = true;
-        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         transform.position = _respawnPositionTransform.position;
         _animator.SetTrigger("Respawn");
+        audioSource.PlayOneShot(_respawnAudio);
     }
 }
