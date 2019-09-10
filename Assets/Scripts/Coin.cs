@@ -5,14 +5,14 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     private Animator _animator;
-    private CoinController _coinController;
+    private CoinManager _coinManager;
     private bool _bCollected;
 
     private void Start()
     {
         _bCollected = false;
         _animator = GetComponent<Animator>();
-        _coinController = GetComponentInParent<CoinController>();
+        _coinManager = GetComponentInParent<CoinManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,7 +20,7 @@ public class Coin : MonoBehaviour
         if (!_bCollected)
         {
             _animator.SetTrigger("Collected");
-            _coinController.GainedCoin();
+            _coinManager.GainedCoin();
             _bCollected = true;
         }
     }
