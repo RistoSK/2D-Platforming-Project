@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UnfinishedController : BaseController<UIUnfinishedRoot>
 {
-    //private GameData _gameData;
+    [SerializeField] private TextMeshProUGUI _coinsText;
+    [SerializeField] private GameController _gameController;
 
     public override void InitiateController()
     {
@@ -26,10 +28,9 @@ public class UnfinishedController : BaseController<UIUnfinishedRoot>
         ui.UnfinishedView.OnQuitClicked -= QuitGame;
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        //_gameData.gameTime += Time.deltaTime;
-        //ui.GameView.UpdateTime(_gameData.gameTime);
+        _coinsText.text = _gameController.GetCurrentCoins() + " / 50";
     }
 
     private void ReplayGame()

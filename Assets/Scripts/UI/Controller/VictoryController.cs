@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class VictoryController : BaseController<UIVictoryRoot>
 {
-    //private GameData _gameData;
+    [SerializeField] private TextMeshProUGUI _timeText;
+    [SerializeField] private GameController _gameController;
 
     public override void InitiateController()
     {
@@ -26,10 +28,9 @@ public class VictoryController : BaseController<UIVictoryRoot>
         ui.VictoryView.OnQuitClicked -= QuitGame;
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        //_gameData.gameTime += Time.deltaTime;
-        //ui.GameView.UpdateTime(_gameData.gameTime);
+        _timeText.text = _gameController.GetEndingTime();
     }
 
     private void ReplayGame()
