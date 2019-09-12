@@ -22,7 +22,7 @@ public class MenuController : BaseController<UIMenuRoot>
 
     private void StartGame()
     {
-        //root.ChangeController(RootController.ControllerType.Game);
+        root.ChangeController(RootController.ControllerType.Game);
         //Start Game
     }
 

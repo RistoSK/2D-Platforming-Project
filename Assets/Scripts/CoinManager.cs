@@ -2,32 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public class CoinManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _currentCoinsText;
+    public int CurrentCoinAmount { get; private set; }
 
-    private int _currentCoinsAmount;
     private AudioSource _audioSource;
+
+    public UnityAction OnCoinGained;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
 
-        _currentCoinsAmount = 0;
-        _currentCoinsText.text = _currentCoinsAmount.ToString();
+        CurrentCoinAmount = 0;
     }
 
     public void GainedCoin()
     {
-        _currentCoinsAmount++;
-        _currentCoinsText.text = _currentCoinsAmount.ToString();
+        CurrentCoinAmount++;
 
         _audioSource.Play();
+
+        OnCoinGained?.Invoke();
     }
 
     public bool AllCoinsCollected()
     {
-        return _currentCoinsAmount == 50;
+        return CurrentCoinAmount == 50;
     }
 }
