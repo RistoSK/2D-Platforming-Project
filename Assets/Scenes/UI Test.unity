@@ -2321,6 +2321,8 @@ MonoBehaviour:
   _menuController: {fileID: 0}
   _victoryController: {fileID: 0}
   _unfinishedController: {fileID: 0}
+  _gameController: {fileID: 0}
+  _pauseController: {fileID: 0}
 --- !u!1 &1095890247
 GameObject:
   m_ObjectHideFlags: 0
@@ -3983,6 +3985,10 @@ PrefabInstance:
       objectReference: {fileID: 1748226184}
     - target: {fileID: 6013614515708393600, guid: d6a59d7669fe7fb42ad05d04c5e3bf5e,
         type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1748226184}
+    - target: {fileID: 1860362791, guid: d6a59d7669fe7fb42ad05d04c5e3bf5e, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1748226184}

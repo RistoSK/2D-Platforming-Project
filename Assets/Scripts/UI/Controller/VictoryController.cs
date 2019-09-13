@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VictoryController : BaseController<UIVictoryRoot>
 {
@@ -35,11 +36,7 @@ public class VictoryController : BaseController<UIVictoryRoot>
 
     private void ReplayGame()
     {
-        //gameScore = Mathf.CeilToInt(_gameData.gameTime * Random.Range(0.0f, 10.0f));
-
-       // DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, _gameData);
-
-        //root.ChangeController(RootController.ControllerType.GameOver);
+        SceneManager.LoadScene(0);
     }
 
     private void QuitGame()

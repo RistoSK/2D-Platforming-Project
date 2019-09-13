@@ -8,6 +8,7 @@ public class GameController : BaseController<UIGameRoot>
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _currentCoinsText;
     [SerializeField] private CoinManager _coinManager;
+    [SerializeField] private PlayersTargetGoal _playersTargetGoal;
 
     private bool _bFreezeTimer;
     private float _timer;
@@ -18,6 +19,7 @@ public class GameController : BaseController<UIGameRoot>
         ui.GameView.OnPauseClicked += PauseGame;
         ui.GameView.OnQuitClicked += QuitGame;
         _coinManager.OnCoinGained += CoinGained;
+        _playersTargetGoal.OnLevelFinished += LevelFinished;
 
         base.InitiateController();
     }
@@ -29,6 +31,7 @@ public class GameController : BaseController<UIGameRoot>
         ui.GameView.OnPauseClicked -= PauseGame;
         ui.GameView.OnQuitClicked -= QuitGame;
         _coinManager.OnCoinGained -= CoinGained;
+        _playersTargetGoal.OnLevelFinished -= LevelFinished;
     }
 
     public int GetCurrentCoins()
@@ -87,4 +90,16 @@ public class GameController : BaseController<UIGameRoot>
     {
         _currentCoinsText.text = _coinManager.CurrentCoinAmount + " / 50";
     }
+
+    private void LevelFinished()
+    {
+        if (_coinManager.AllCoinsCollected())
+        {
+            root.ChangeController(RootController.ControllerType.Victory);
+            return;
+        }
+
+        root.ChangeController(RootController.ControllerType.Unfinished);
+    }
+
 }

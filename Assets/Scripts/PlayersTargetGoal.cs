@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayersTargetGoal : MonoBehaviour
 {
-    [SerializeField] private LevelManager _levelManager;
+    public UnityAction OnLevelFinished;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,7 +11,7 @@ public class PlayersTargetGoal : MonoBehaviour
 
         if (player)
         {
-            _levelManager.WonGame();          
+            OnLevelFinished?.Invoke();
         }
     }
 }
