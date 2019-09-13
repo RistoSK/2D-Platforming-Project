@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,12 +9,8 @@ public class VictoryController : BaseController<UIVictoryRoot>
 
     public override void InitiateController()
     {
-       // _gameData = new GameData();
-
         ui.VictoryView.OnReplayClicked += ReplayGame;
         ui.VictoryView.OnQuitClicked += QuitGame;
-
-        //ui.GameView.UpdateTime(0);
 
         base.InitiateController();
     }

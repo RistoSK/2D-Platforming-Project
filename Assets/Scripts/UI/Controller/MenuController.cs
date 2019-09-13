@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MenuController : BaseController<UIMenuRoot>
 {
@@ -23,7 +21,6 @@ public class MenuController : BaseController<UIMenuRoot>
     private void StartGame()
     {
         root.ChangeController(RootController.ControllerType.Game);
-        //Start Game
     }
 
     private void QuitGame()

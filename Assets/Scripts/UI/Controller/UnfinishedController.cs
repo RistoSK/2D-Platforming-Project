@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,12 +9,8 @@ public class UnfinishedController : BaseController<UIUnfinishedRoot>
 
     public override void InitiateController()
     {
-        // _gameData = new GameData();
-
         ui.UnfinishedView.OnReplayClicked += ReplayGame;
         ui.UnfinishedView.OnQuitClicked += QuitGame;
-
-        //ui.GameView.UpdateTime(0);
 
         base.InitiateController();
     }
