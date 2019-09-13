@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class GameController : BaseController<UIGameRoot>
 { 
-    [SerializeField] private GameObject _levelCompletedCanvas;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _currentCoinsText;
     [SerializeField] private CoinManager _coinManager;
@@ -13,6 +12,7 @@ public class GameController : BaseController<UIGameRoot>
     private bool _bFreezeTimer;
     private float _timer;
     private AudioSource _audioSource;
+    private float _playbackTime;
 
     public override void InitiateController()
     {   
@@ -34,21 +34,22 @@ public class GameController : BaseController<UIGameRoot>
         _playersTargetGoal.OnLevelFinished -= LevelFinished;
     }
 
-    public int GetCurrentCoins()
-    {
-        return _coinManager.CurrentCoinAmount;
-    }
-
-    public string GetEndingTime()
-    {
-        return _timerText.text;
-    }
-
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _currentCoinsText.text = "0 / 50";
         _timer = 0f;
+
+        _audioSource.Play();
+    }
+
+    private void OnEnable()
+    {
+        if (_audioSource != null)
+        {
+            _audioSource.time = _playbackTime;
+            _audioSource.Play();
+        }
     }
 
     private void Update()
@@ -64,20 +65,19 @@ public class GameController : BaseController<UIGameRoot>
         }
     }
 
-    public void WonGame()
+    public int GetCurrentCoins()
     {
-        _bFreezeTimer = true;
-
-        if (_coinManager.AllCoinsCollected())
-        {
-            _levelCompletedCanvas.SetActive(true);
-            return;
-        }
-        SceneManager.LoadScene(0);
+        return _coinManager.CurrentCoinAmount;
     }
+
+    public string GetEndingTime()
+    {
+        return _timerText.text;
+    } 
 
     private void PauseGame()
     {
+        _playbackTime = _audioSource.time;
         root.ChangeController(RootController.ControllerType.Pause);
     }
 
