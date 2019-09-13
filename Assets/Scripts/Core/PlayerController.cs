@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : KinematicObject
@@ -24,14 +23,17 @@ public class PlayerController : KinematicObject
     private Animator _animator;
     private Collider2D _collider;
 
-    private void Start()
+    public override void Start()
     {
         playerState = PlayerState.Grounded;
 
-        _collider = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<Collider2D>();        
         audioSource = GetComponent<AudioSource>();
         _animator = GetComponent<Animator>();
+
+        OnCharacterFalling += CharacterIsFalling;
+
+        base.Start();
     }
 
     protected override void Update()
@@ -110,7 +112,7 @@ public class PlayerController : KinematicObject
         }
     }
 
-        private void UpdateJumpingPlayerState()
+    private void UpdateJumpingPlayerState()
     {
         switch (playerState)
         {
@@ -154,5 +156,14 @@ public class PlayerController : KinematicObject
         transform.position = _respawnPositionTransform.position;
         _animator.SetTrigger("Respawn");
         audioSource.PlayOneShot(_respawnAudio);
+    }
+
+    protected void CharacterIsFalling()
+    {
+        if (playerState != PlayerState.Jumping)
+        {
+            playerState = PlayerState.Jumping;
+            _animator.SetBool("Jumping", true);
+        }
     }
 }

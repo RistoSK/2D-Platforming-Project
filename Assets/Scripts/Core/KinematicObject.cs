@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class KinematicObject : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class KinematicObject : MonoBehaviour
 
     [SerializeField] private AudioClip _jumpingAudio;
 
+    protected UnityAction OnCharacterFalling;
+
     protected Rigidbody2D rb;
     protected Vector2 movement;
     protected bool bIsJumping;
@@ -24,6 +25,11 @@ public class KinematicObject : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private float _coyoteTime = 0.3f;
     private float _notGroundedTimer;
+
+    public virtual void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     protected virtual void Update()
     {
@@ -40,6 +46,11 @@ public class KinematicObject : MonoBehaviour
         else if (movement.x < -0.01f)
         {
             _spriteRenderer.flipX = true;
+        }
+
+        if (rb.velocity.y < -20f)
+        {
+            OnCharacterFalling?.Invoke();
         }
 
         if (!_bIsGrounded)
