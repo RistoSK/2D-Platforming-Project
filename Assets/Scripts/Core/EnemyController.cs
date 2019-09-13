@@ -72,6 +72,7 @@ public class EnemyController : MonoBehaviour
             if (player.playerState != PlayerController.PlayerState.Grounded)
             {
                 _audioSource.Play();
+                _rb.isKinematic = true;
                 _animator.SetBool("Dead", true);
                 _bIsDead = true;
                 _collider.enabled = false;
