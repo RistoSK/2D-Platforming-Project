@@ -4,9 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class UnfinishedController : BaseController<UIUnfinishedRoot>
 {
-    [SerializeField] private TextMeshProUGUI _coinsText;
-    [SerializeField] private GameController _gameController;
-
     public override void InitiateController()
     {
         ui.UnfinishedView.OnReplayClicked += ReplayGame;
@@ -21,11 +18,6 @@ public class UnfinishedController : BaseController<UIUnfinishedRoot>
 
         ui.UnfinishedView.OnReplayClicked -= ReplayGame;
         ui.UnfinishedView.OnQuitClicked -= QuitGame;
-    }
-
-    private void OnEnable()
-    {
-        _coinsText.text = _gameController.GetCurrentCoins() + " / 50";
     }
 
     private void ReplayGame()

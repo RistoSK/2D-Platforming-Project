@@ -4,9 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class VictoryController : BaseController<UIVictoryRoot>
 {
-    [SerializeField] private TextMeshProUGUI _timeText;
-    [SerializeField] private GameController _gameController;
-
     public override void InitiateController()
     {
         ui.VictoryView.OnReplayClicked += ReplayGame;
@@ -21,11 +18,6 @@ public class VictoryController : BaseController<UIVictoryRoot>
 
         ui.VictoryView.OnReplayClicked -= ReplayGame;
         ui.VictoryView.OnQuitClicked -= QuitGame;
-    }
-
-    private void OnEnable()
-    {
-        _timeText.text = _gameController.GetEndingTime();
     }
 
     private void ReplayGame()
